@@ -97,6 +97,44 @@ if('IntersectionObserver' in window){
  },{threshold:.45});
  countObserver.observe(document.getElementById('impact-grid'));
 }
+// Category previews share the existing photo layout; selecting never hides photos.
+document.querySelectorAll('[data-category-navigation]').forEach(control=>{
+ const chapter=control.closest('.chapter');
+ const buttons=[...control.querySelectorAll('[data-category]')];
+ const photos=[...chapter.querySelectorAll('[data-category-photo]')];
+ const status=control.querySelector('.category-status');
+ let selected=null;
+ function render(key){
+  const index=buttons.findIndex(button=>button.dataset.category===key);
+  control.classList.toggle('has-category',index!==-1);
+  if(index!==-1)control.style.setProperty('--category-index',String(index));
+  buttons.forEach(button=>{
+   button.classList.toggle('is-preview',button.dataset.category===key);
+   button.setAttribute('aria-pressed',String(button.dataset.category===selected));
+  });
+  photos.forEach(photo=>photo.classList.toggle('is-category-match',photo.dataset.categoryPhoto===key));
+ }
+ buttons.forEach(button=>{
+  button.addEventListener('pointerenter',event=>{
+   if(finePointer.matches&&event.pointerType!=='touch')render(button.dataset.category);
+  });
+  button.addEventListener('click',()=>{
+   selected=selected===button.dataset.category?null:button.dataset.category;
+   render(selected);
+   const matches=photos.filter(photo=>photo.dataset.categoryPhoto===selected);
+   status.textContent=selected
+    ?button.querySelector('.category-name').textContent+'：'+matches.map(photo=>photo.querySelector('figcaption').textContent).join('、')+'。全部照片仍在页面展示。再次点选可取消高亮。'
+    :'已取消分类高亮，全部照片仍在页面展示。';
+  });
+ });
+ control.addEventListener('pointerleave',()=>render(selected));
+ control.addEventListener('keydown',event=>{
+  if(event.key==='Escape'){
+   selected=null;render(null);status.textContent='已取消分类高亮。';
+  }
+ });
+});
+
   const dialog = document.getElementById('intake-dialog');
   const form = document.getElementById('intake-form');
   const detail = document.getElementById('request-detail');
