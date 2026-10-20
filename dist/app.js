@@ -99,13 +99,6 @@ if('IntersectionObserver' in window){
 }
 const accordionButtons=[...document.querySelectorAll('.accordion-toggle')];
 accordionButtons.forEach(button=>button.addEventListener('click',()=>{const next=button.getAttribute('aria-expanded')!=='true';accordionButtons.forEach(item=>{const expanded=item===button&&next;item.setAttribute('aria-expanded',String(expanded));document.getElementById(item.getAttribute('aria-controls')).hidden=!expanded;});}));
-const track=document.getElementById('gallery-track'),previous=document.getElementById('gallery-prev'),next=document.getElementById('gallery-next');
-function updateGallery(){previous.disabled=track.scrollLeft<4;next.disabled=track.scrollLeft+track.clientWidth>=track.scrollWidth-4;}
-function moveGallery(direction){track.scrollBy({left:direction*track.clientWidth*.7,behavior:motionEnabled?'smooth':'auto'});}
-previous.addEventListener('click',()=>moveGallery(-1));next.addEventListener('click',()=>moveGallery(1));
-track.addEventListener('scroll',updateGallery,{passive:true});
-track.addEventListener('keydown',event=>{if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();moveGallery(event.key==='ArrowRight'?1:-1);}});
-window.addEventListener('resize',updateGallery,{passive:true});updateGallery();
   const dialog = document.getElementById('intake-dialog');
   const form = document.getElementById('intake-form');
   const detail = document.getElementById('request-detail');
