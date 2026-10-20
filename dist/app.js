@@ -97,8 +97,6 @@ if('IntersectionObserver' in window){
  },{threshold:.45});
  countObserver.observe(document.getElementById('impact-grid'));
 }
-const accordionButtons=[...document.querySelectorAll('.accordion-toggle')];
-accordionButtons.forEach(button=>button.addEventListener('click',()=>{const next=button.getAttribute('aria-expanded')!=='true';accordionButtons.forEach(item=>{const expanded=item===button&&next;item.setAttribute('aria-expanded',String(expanded));document.getElementById(item.getAttribute('aria-controls')).hidden=!expanded;});}));
   const dialog = document.getElementById('intake-dialog');
   const form = document.getElementById('intake-form');
   const detail = document.getElementById('request-detail');
