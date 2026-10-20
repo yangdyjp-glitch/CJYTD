@@ -3,29 +3,35 @@
 const body=document.body;
 const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)');
+let effectsEnabled=true;
 let motionEnabled=!reducedMotion.matches;
+let syncSectionMotion=()=>{};
+let countAnimationFrame=0;
 const motionToggle=document.getElementById('motion-toggle');
 const motionLabel=document.getElementById('motion-label');
 const hero=document.querySelector('.hero');
 const header=document.getElementById('site-header');
 const progress=document.getElementById('reading-progress');
 function updateMotion(enabled){
- motionEnabled=Boolean(enabled)&&!reducedMotion.matches;
+ effectsEnabled=Boolean(enabled);
+ motionEnabled=effectsEnabled&&!reducedMotion.matches;
  body.classList.toggle('motion-paused',!motionEnabled);
+ body.classList.toggle('interaction-paused',!effectsEnabled);
  document.documentElement.style.scrollBehavior=motionEnabled?'':'auto';
- motionToggle.setAttribute('aria-pressed',String(!motionEnabled));
- motionToggle.setAttribute('aria-label',motionEnabled?'暂停动态效果':'开启动态效果');
- motionLabel.textContent=reducedMotion.matches?'已减少动态':motionEnabled?'暂停动效':'开启动效';
- motionToggle.disabled=reducedMotion.matches;
+ motionToggle.setAttribute('aria-pressed',String(!effectsEnabled));
+ motionToggle.setAttribute('aria-label',effectsEnabled?'暂停动态和交互效果':'开启动态和交互效果');
+ motionLabel.textContent=!effectsEnabled?'开启动效':reducedMotion.matches?'暂停交互':'暂停动效';
+ motionToggle.disabled=false;
  if(!motionEnabled){
   ['--pointer-x','--pointer-y','--hero-drift','--hero-copy-drift'].forEach(p=>hero.style.setProperty(p,'0px'));
   document.querySelectorAll('[data-parallax]').forEach(frame=>frame.style.setProperty('--photo-y','0px'));
   document.querySelectorAll('[data-count]').forEach(el=>{el.textContent=Number(el.dataset.count).toLocaleString('zh-CN');});
  }
+ syncSectionMotion();
 }
-updateMotion(motionEnabled);
-motionToggle.addEventListener('click',()=>updateMotion(!motionEnabled));
-reducedMotion.addEventListener('change',()=>updateMotion(!reducedMotion.matches));
+updateMotion(effectsEnabled);
+motionToggle.addEventListener('click',()=>updateMotion(!effectsEnabled));
+reducedMotion.addEventListener('change',()=>updateMotion(effectsEnabled));
 const menuButton=document.querySelector('.menu-button');
 const navigation=document.getElementById('main-nav');
 function setMenu(open){
@@ -45,7 +51,7 @@ function selectTheme(index,focus=false,announce=false){
  const selected=themeButtons[index],nextTheme=selected.dataset.themeButton;
  if(nextTheme!==currentTheme){
   currentTheme=nextTheme;body.dataset.theme=nextTheme;
-  themeButtons.forEach(button=>{const active=button===selected;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;document.getElementById(button.getAttribute('aria-controls')).hidden=!active;});
+  themeButtons.forEach(button=>{const active=button===selected;button.classList.toggle('is-active',active);document.getElementById(button.getAttribute('aria-controls')).hidden=!active;});
   scenes.forEach(scene=>scene.classList.toggle('is-active',scene.dataset.scene===nextTheme));
   if(announce)announcement.textContent='已切换到'+selected.querySelector('.theme-word').textContent+'主题。';
  }
@@ -88,15 +94,86 @@ if('IntersectionObserver' in window){
  document.querySelectorAll('[data-reveal]').forEach(el=>revealObserver.observe(el));
  const chapterObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;document.querySelectorAll('[data-chapter-link]').forEach(link=>{const active=link.dataset.chapterLink===entry.target.dataset.chapter;link.classList.toggle('is-current',active);if(active)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});});},{rootMargin:'-20% 0px -45% 0px',threshold:0});
  document.querySelectorAll('[data-chapter]').forEach(section=>chapterObserver.observe(section));
- let countsStarted=false;
- const countObserver=new IntersectionObserver(entries=>{
-  if(countsStarted||!entries.some(entry=>entry.isIntersecting))return;countsStarted=true;countObserver.disconnect();
-  const elements=[...document.querySelectorAll('[data-count]')],start=performance.now();
-  function drawCount(now){const t=motionEnabled?Math.min((now-start)/1400,1):1,eased=1-Math.pow(1-t,3);elements.forEach(el=>{el.textContent=Math.round(Number(el.dataset.count)*eased).toLocaleString('zh-CN');});if(t<1)requestAnimationFrame(drawCount);}
-  requestAnimationFrame(drawCount);
- },{threshold:.45});
- countObserver.observe(document.getElementById('impact-grid'));
 }
+
+// Presentation effects repeat while visible; pause them offscreen or in a hidden tab.
+// Reduced-motion users retain step-by-step color feedback without moving elements.
+const countElements=[...document.querySelectorAll('[data-count]')];
+function finishCounts(){
+ cancelAnimationFrame(countAnimationFrame);countAnimationFrame=0;
+ countElements.forEach(el=>{el.textContent=Number(el.dataset.count).toLocaleString('zh-CN');});
+}
+function animateCounts(){
+ cancelAnimationFrame(countAnimationFrame);
+ if(!motionEnabled){finishCounts();return;}
+ const start=performance.now();
+ function drawCount(now){
+  const t=Math.min((now-start)/1400,1),eased=1-Math.pow(1-t,3);
+  countElements.forEach(el=>{el.textContent=Math.round(Number(el.dataset.count)*eased).toLocaleString('zh-CN');});
+  countAnimationFrame=t<1?requestAnimationFrame(drawCount):0;
+ }
+ countAnimationFrame=requestAnimationFrame(drawCount);
+}
+function createVisibleLoop(root,startCycle,stopCycle,duration,threshold=.18){
+ let visible=false,running=false,timer=0;
+ function cycle(){
+  root.dataset.motionCycle=String(Number(root.dataset.motionCycle||0)+1);
+  root.dataset.motionState='running';
+  startCycle();
+  timer=window.setTimeout(cycle,duration);
+ }
+ function sync(){
+  const shouldRun=visible&&effectsEnabled&&!document.hidden;
+  if(shouldRun&&!running){running=true;cycle();}
+  else if(!shouldRun&&running){
+   running=false;clearTimeout(timer);timer=0;stopCycle();
+   root.dataset.motionState='paused';
+  }
+ }
+ if('IntersectionObserver' in window){
+  const observer=new IntersectionObserver(entries=>{
+   visible=entries.some(entry=>entry.isIntersecting&&entry.intersectionRatio>=threshold);
+   sync();
+  },{threshold});
+  observer.observe(root);
+ }else{visible=true;sync();}
+ document.addEventListener('visibilitychange',sync);
+ return sync;
+}
+function createSectionSequence(root,itemSelector){
+ const items=[...root.querySelectorAll(itemSelector)];
+ let stepTimers=[];
+ function clearSteps(){stepTimers.forEach(clearTimeout);stepTimers=[];}
+ function finish(){
+  clearSteps();root.style.setProperty('--sequence-progress','1');
+  items.forEach(item=>{item.classList.remove('is-active');item.classList.add('is-complete');});
+  root.dataset.motionState='holding';
+ }
+ function play(){
+  clearSteps();root.dataset.motionState='resetting';
+  root.style.setProperty('--sequence-progress','0');
+  items.forEach(item=>item.classList.remove('is-active','is-complete'));
+  items.forEach((_,index)=>{
+   stepTimers.push(window.setTimeout(()=>{
+    root.dataset.motionState='running';
+    items.forEach((item,i)=>{item.classList.toggle('is-active',i===index);item.classList.toggle('is-complete',i<index);});
+    root.style.setProperty('--sequence-progress',String(index/Math.max(1,items.length-1)));
+   },80+index*1000));
+  });
+  stepTimers.push(window.setTimeout(finish,80+items.length*1000));
+ }
+ return createVisibleLoop(root,play,finish,items.length*1000+2000);
+}
+const sequenceUpdates=[
+ createSectionSequence(document.querySelector('[data-about-motion]'),'.about-direction'),
+ createSectionSequence(document.querySelector('[data-process-flow]'),'.process-list li'),
+ createVisibleLoop(document.getElementById('impact-grid'),animateCounts,finishCounts,8000,.35)
+];
+syncSectionMotion=()=>{
+ sequenceUpdates.forEach(update=>update());
+ if(!motionEnabled)finishCounts();
+};
+syncSectionMotion();
 // Category previews share the existing photo layout; selecting never hides photos.
 document.querySelectorAll('[data-category-navigation]').forEach(control=>{
  const chapter=control.closest('.chapter');

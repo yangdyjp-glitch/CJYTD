@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0e3a9b"><meta name="description" content="中日青年人才发展协会，以青年活动与论坛、招聘会、圆桌交流、挂牌仪式和创新创业活动，连接中日青年、人才与合作资源。">
 <title>中日青年人才发展协会｜青年 · 人才 · 发展</title>
-<link rel="icon" type="image/jpeg" href="assets/association-logo.jpg"><link rel="preload" as="image" href="assets/events/tokyo-youth-reception.webp"><link rel="stylesheet" href="styles.css?v=9"><script src="app.js?v=7" defer></script>
+<link rel="icon" type="image/jpeg" href="assets/association-logo.jpg"><link rel="preload" as="image" href="assets/events/tokyo-youth-reception.webp"><link rel="stylesheet" href="styles.css?v=18"><script src="app.js?v=10" defer></script>
 </head>
 <body data-theme="youth">
 <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="brand-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .57 1.93 .19 0 -1.5"/></filter></defs></svg>
@@ -22,21 +22,31 @@
 <div class="hero-scene development-scene" data-scene="development"><div class="scene-media"><img class="scene-image" src="assets/events/young-talent-roundtable.webp" width="1280" height="852" alt=""></div></div>
 </div><div class="hero-shade"></div><div class="hero-grain" aria-hidden="true"></div>
 <div class="hero-content page-wrap"><p class="hero-promise">青才聚力，汇智共济</p><h1 id="hero-title">从青年出发，向未来同行。</h1>
-<div class="hero-themes" role="tablist" aria-label="探索青年、人才与发展">
-<button class="hero-theme is-active" id="theme-youth" data-theme-button="youth" role="tab" aria-selected="true" aria-controls="copy-youth" tabindex="0" type="button"><span class="theme-word">青年</span><span class="theme-en">Youth</span></button>
-<button class="hero-theme" id="theme-talent" data-theme-button="talent" role="tab" aria-selected="false" aria-controls="copy-talent" tabindex="-1" type="button"><span class="theme-word">人才</span><span class="theme-en">Talent</span></button>
-<button class="hero-theme" id="theme-development" data-theme-button="development" role="tab" aria-selected="false" aria-controls="copy-development" tabindex="-1" type="button"><span class="theme-word">发展</span><span class="theme-en">Development</span></button>
-</div>
+<nav class="hero-themes" aria-label="探索青年、人才与发展">
+<a class="hero-theme is-active" id="theme-youth" data-theme-button="youth" href="#youth" aria-controls="copy-youth"><span class="theme-word">青年</span><span class="theme-en">Youth</span></a>
+<a class="hero-theme" id="theme-talent" data-theme-button="talent" href="#talent" aria-controls="copy-talent"><span class="theme-word">人才</span><span class="theme-en">Talent</span></a>
+<a class="hero-theme" id="theme-development" data-theme-button="development" href="#development" aria-controls="copy-development"><span class="theme-word">发展</span><span class="theme-en">Development</span></a>
+</nav>
 <div class="theme-copies">
-<div class="theme-copy" id="copy-youth" role="tabpanel" aria-labelledby="theme-youth"><h2>在活动中相遇，在对话中成长。</h2><p>青年酒会、文化与科技论坛、学联交流。<br>在交流现场，连接中日青年。</p><a class="hero-link" href="#youth">探索青年活动与论坛<span class="round-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a></div>
-<div class="theme-copy" id="copy-talent" role="tabpanel" aria-labelledby="theme-talent" hidden><h2>让人才与机会，面对面相遇。</h2><p>高校招聘、企业宣讲与城市招才。<br>为用人单位与在日人才搭建交流现场。</p><a class="hero-link" href="#talent">走近招聘会现场<span class="round-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a></div>
-<div class="theme-copy" id="copy-development" role="tabpanel" aria-labelledby="theme-development" hidden><h2>让合作落地，让创新生长。</h2><p>从青年圆桌对话，到站点合作与双创。<br>连接高校、企业与创新项目。</p><a class="hero-link" href="#development">了解交流与发展合作<span class="round-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a></div>
+<div class="theme-copy" id="copy-youth" role="region" aria-labelledby="theme-youth"><h2>在活动中相遇，在对话中成长。</h2><p>青年酒会、文化与科技论坛、学联交流。<br>在交流现场，连接中日青年。</p><a class="hero-link" href="#youth">探索青年活动与论坛<span class="round-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a></div>
+<div class="theme-copy" id="copy-talent" role="region" aria-labelledby="theme-talent" hidden><h2>让人才与机会，面对面相遇。</h2><p>高校招聘、企业宣讲与城市招才。<br>为用人单位与在日人才搭建交流现场。</p><a class="hero-link" href="#talent">走近招聘会现场<span class="round-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a></div>
+<div class="theme-copy" id="copy-development" role="region" aria-labelledby="theme-development" hidden><h2>让合作落地，让创新生长。</h2><p>从青年圆桌对话，到站点合作与双创。<br>连接高校、企业与创新项目。</p><a class="hero-link" href="#development">了解交流与发展合作<span class="round-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a></div>
 </div></div>
 <div class="hero-bottom page-wrap"><a class="scroll-cue" href="#about"><span class="scroll-line"></span>向下探索</a><span class="hero-location">中日之间，连接无限可能。</span><button class="motion-toggle" id="motion-toggle" type="button" aria-label="暂停动态效果" aria-pressed="false"><svg class="pause-symbol" viewBox="0 0 18 18" aria-hidden="true"><path d="M6 4v10M12 4v10"/></svg><svg class="play-symbol" viewBox="0 0 18 18" aria-hidden="true"><path d="m6 3 9 6-9 6Z"/></svg><span id="motion-label">暂停动效</span></button></div><span class="sr-only" id="theme-announcement" role="status" aria-live="polite"></span>
 </section>
-<section class="about section-space" id="about" aria-labelledby="about-title"><div class="page-wrap">
-<div class="about-layout"><div><p class="section-label">中日青年人才发展协会</p><h2 class="display-heading" id="about-title" data-reveal="title">青才聚力，<br>汇智共济。</h2></div><div class="about-copy"><p class="lead">以青年为起点，连接中日之间的<br class="desktop-break">人才、科技与文化。</p><p>中日青年人才发展协会，以促进中日青年沟通协作、推动两国青年人才科技与文化交流为核心使命。协会理事会与核心成员由来自中日两国高校的青年学者与专业人才组成。</p><p>我们陪伴青年成长，促进人才互通，也为政府、企业、高校及科研机构搭建务实、持续的合作路径。</p></div></div>
-<dl class="impact-grid" id="impact-grid"><div><dt>合作政企校机构</dt><dd aria-label="超过100家"><span data-count="100" aria-hidden="true">100</span><span class="stat-unit" aria-hidden="true">+</span></dd></div><div><dt>人才交流活动</dt><dd aria-label="超过100场"><span data-count="100" aria-hidden="true">100</span><span class="stat-unit" aria-hidden="true">+</span></dd></div><div><dt>活动参与人次</dt><dd aria-label="超过4000人次"><span data-count="4000" aria-hidden="true">4,000</span><span class="stat-unit" aria-hidden="true">+</span></dd></div><div><dt>联合挂牌人才站点</dt><dd aria-label="18个"><span data-count="18" aria-hidden="true">18</span><span class="stat-unit" aria-hidden="true">个</span></dd></div></dl></div></section>
+<section class="about section-space" id="about" aria-labelledby="about-title" data-about-motion><div class="page-wrap">
+  <header class="about-heading"><div><p class="section-label">关于协会</p><h2 id="about-title">中日青年<wbr>人才发展协会</h2></div></header>
+  <div class="about-layout">
+    <div class="about-mission"><h3 class="display-heading">青才聚力，<br>汇智共济。</h3></div>
+    <div class="about-copy"><p class="lead">以青年为起点，连接中日之间的<br class="desktop-break">人才、科技与文化。</p><p>中日青年人才发展协会，以促进中日青年沟通协作、推动两国青年人才科技与文化交流为核心使命。协会理事会与核心成员由来自中日两国高校的青年学者与专业人才组成。</p><p>我们围绕青年成长、人才交流与合作发展，连接个人与机构的不同需求。从一次相遇、一场招聘，到合作站点和创新项目交流，为政府、企业、高校及科研机构搭建务实、持续的沟通与合作平台。</p></div>
+  </div>
+  <div class="about-directions" aria-label="协会的三个服务方向">
+    <a class="about-direction" href="#youth"><h3>陪伴青年成长<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></h3><p>通过青年活动、主题论坛与联谊交流，让不同专业和经历的青年相聚，在分享与对话中拓展视野、建立联系。</p></a>
+    <a class="about-direction" href="#talent"><h3>促进人才交流<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></h3><p>围绕企业纳新、城市引才和高校招聘，连接用人单位与在日人才，让职业选择与发展机会面对面相遇。</p></a>
+    <a class="about-direction" href="#development"><h3>推动合作发展<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></h3><p>从青年圆桌交流、合作站点挂牌，到创新创业活动，促进高校、企业与人才之间的沟通，延续交流成果。</p></a>
+  </div>
+  <dl class="impact-grid" id="impact-grid"><div><dt>合作政企校机构</dt><dd aria-label="超过100家"><span data-count="100" aria-hidden="true">100</span><span class="stat-unit" aria-hidden="true">+</span></dd></div><div><dt>人才交流活动</dt><dd aria-label="超过300场"><span data-count="300" aria-hidden="true">300</span><span class="stat-unit" aria-hidden="true">+</span></dd></div><div><dt>活动参与人次</dt><dd aria-label="超过4000人次"><span data-count="4000" aria-hidden="true">4,000</span><span class="stat-unit" aria-hidden="true">+</span></dd></div><div><dt>联合挂牌人才站点</dt><dd aria-label="18个"><span data-count="18" aria-hidden="true">18</span><span class="stat-unit" aria-hidden="true">个</span></dd></div></dl>
+</div></section>
 <section class="youth-chapter chapter section-space" id="youth" aria-labelledby="youth-title" data-chapter="youth"><div class="chapter-layout page-wrap">
 <div class="chapter-copy"><p class="chapter-label"><span>青年</span><span>Youth</span></p><h2 class="display-heading" id="youth-title">在交流现场，<br>遇见同行的人。</h2><p class="chapter-intro">从青年活动到主题论坛，让不同经历的人相聚，分享想法、拓展视野。</p>
 <div class="category-navigation" data-category-navigation>
@@ -96,8 +106,51 @@
 <figure class="chapter-photo" data-category-photo="innovation" style="--photo-focus:50% 50%"><img src="assets/events/hangzhou-innovation-contest.webp" width="1920" height="1080" alt="杭州万亩千亿双创大赛" loading="lazy" decoding="async"><figcaption>杭州万亩千亿双创大赛</figcaption></figure>
 </div>
 </div></section>
-<section class="process" aria-labelledby="process-title"><div class="page-wrap process-layout"><h2 id="process-title">一次合作，<br>每一步都有回应。</h2><ol class="process-list"><li><span>01</span><h3>需求沟通</h3><p>了解目标与合作方向</p></li><li><span>02</span><h3>方案共创</h3><p>匹配资源与实施安排</p></li><li><span>03</span><h3>在地执行</h3><p>中日团队协同推进</p></li><li><span>04</span><h3>持续跟进</h3><p>回顾成果与后续合作</p></li></ol></div></section>
-<section class="connect section-space" id="connect" aria-labelledby="connect-title"><div class="connect-orbit" aria-hidden="true"></div><div class="page-wrap connect-layout"><div class="connect-copy"><p class="section-label">与青发协同行</p><h2 id="connect-title" data-reveal="title">下一次连接，<br>由你开启。</h2><p>关于成长，关于人才，关于新的合作。<br>让我们从一次真诚的沟通开始。</p><button class="button button-light" type="button" data-open-intake>整理交流合作需求<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></button></div><div class="contact-panel"><div class="contact-methods"><figure class="contact-qr"><img src="assets/contact-wechat.png" width="237" height="237" alt="程老师的微信联系二维码" loading="lazy"><figcaption>微信联系程老师</figcaption></figure><div class="contact-phone-group"><span>日本电话（+81）</span><a class="contact-phone" href="tel:+819058023734">090-5802-3734</a><a class="call-link" href="tel:+819058023734">致电咨询<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 2a14 14 0 0 1-7-7l2-2-2-5Z"/></svg></a></div></div><p class="contact-address"><span>日本联系地址</span>东京都新宿区百人町2-4-5 及川ビル5F</p><a class="contact-return" href="#youth">了解青年、人才与发展服务<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div></div></section>
+<section class="connect" id="connect" aria-labelledby="connect-title">
+  <div class="page-wrap">
+    <div class="connect-process" aria-labelledby="process-title" data-process-flow>
+      <div class="process-heading"><div><p>合作流程</p><h2 id="process-title">一次合作，<wbr>每一步都有回应。</h2></div></div>
+      <ol class="process-list">
+        <li><span class="process-number" aria-hidden="true">01</span><div><h3>需求沟通</h3><p>了解目标与合作方向</p></div></li>
+        <li><span class="process-number" aria-hidden="true">02</span><div><h3>方案共创</h3><p>匹配资源与实施安排</p></div></li>
+        <li><span class="process-number" aria-hidden="true">03</span><div><h3>在地执行</h3><p>中日团队协同推进</p></div></li>
+        <li><span class="process-number" aria-hidden="true">04</span><div><h3>持续跟进</h3><p>回顾成果与后续合作</p></div></li>
+      </ol>
+    </div>
+    <div class="connect-heading"><p class="connect-eyebrow">合作与联系</p><span>与青发协同行</span></div>
+    <div class="connect-layout">
+      <div class="connect-copy">
+        <h2 id="connect-title">下一次连接，<br>由你开启。</h2>
+        <p>关于成长，关于人才，关于新的合作。<br>让我们从一次真诚的沟通开始。</p>
+        <div class="connect-actions">
+          <button class="button button-light" type="button" data-open-intake>整理交流合作需求<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></button>
+        </div>
+      </div>
+      <div class="contact-panel">
+        <h3>联系协会</h3>
+        <div class="contact-methods">
+          <figure class="contact-qr">
+            <img src="assets/contact-wechat.jpg" width="758" height="745" alt="微信联系二维码" loading="lazy">
+          </figure>
+          <div class="contact-phones">
+            <div class="contact-phone-group">
+              <span>日本电话（+81）</span>
+              <a class="contact-phone" href="tel:+818045761104" aria-label="拨打日本电话 +81 80 4576 1104">080-4576-1104<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 2a14 14 0 0 1-7-7l2-2-2-5Z"/></svg></a>
+            </div>
+            <div class="contact-phone-group">
+              <span>中国电话（+86）</span>
+              <a class="contact-phone" href="tel:+8618629613381" aria-label="拨打中国电话 +86 18629613381">186-2961-3381<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 2a14 14 0 0 1-7-7l2-2-2-5Z"/></svg></a>
+            </div>
+          </div>
+        </div>
+        <div class="contact-addresses">
+          <div class="contact-address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><p><span>日本联系地址</span>东京都新宿区百人町2-4-5 及川ビル5F</p></div>
+          <div class="contact-address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><p><span>中国联系地址</span>上海市普陀区 · 西安市高新区</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 </main>
 <footer class="site-footer"><div class="page-wrap footer-inner"><p>© <span id="year">2026</span> 中日青年人才发展协会</p><p>青才聚力，汇智共济</p><a href="#top">回到顶部<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></a></div></footer>
   <dialog class="intake-dialog" id="intake-dialog" aria-labelledby="intake-title">
