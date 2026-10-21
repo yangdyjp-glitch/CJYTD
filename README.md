@@ -18,7 +18,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\setup-local.ps1
 - 桌面“停止青发协网站”：停止由本启动脚本管理的服务。
 - 当前用户的登录启动项“CJYTD Preview”：登录 Windows 后自动启动后台服务，不自动弹出浏览器。
 
-地址仍是 http://127.0.0.1:8000/?v=18#youth 。首次设置后可关闭 PowerShell；之后无需手动打开命令窗口。需要 Python 3.7+，脚本会优先查找 LibreOffice 自带的 Python，再查找 PATH 中的 Python / Python Launcher。无需管理员权限。脚本使用相对路径，支持中文及含空格的目录；请勿在设置后移动仓库。
+地址仍是 http://127.0.0.1:8000/?v=18#youth 。首次设置后可关闭 PowerShell；之后无需手动打开命令窗口。使用 Windows 自带的 PowerShell 5.1 和 .NET 提供本地服务，无需安装 Python、Node.js 或其他运行环境，也无需管理员权限。脚本使用相对路径，支持中文及含空格的目录；请勿在设置后移动仓库。
 
 所有 PowerShell 文件以 UTF-8 BOM 保存，兼容 Windows PowerShell 5.1。后台日志和进程记录保存在 `.preview/`，不提交 Git。若 8000 端口被其他服务占用，启动器会提示，不会关闭其他程序。已在运行且首页内容完全一致的旧预览可继续使用；停止脚本只管理它自己启动并记录的进程。
 
@@ -28,7 +28,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\setup-local.ps1
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\setup-local.ps1 -Remove
 ```
 
-脚本已检查编码、解析与启动/停止逻辑；Windows 原生后台窗口和快捷方式仍需在目标 Windows 电脑验证。
+已检查脚本编码、语法、HTTP 页面/图片读取、并发访问与启动/停止逻辑；Windows 原生后台窗口和快捷方式仍需在目标 Windows 电脑验证。
 
 ### 手动预览 / 其他系统
 
@@ -42,6 +42,9 @@ python -m http.server 8000 --bind 127.0.0.1 --directory dist
 
 ## 文件结构
 
+- `start.ps1` / `stop.ps1`：后台启动与停止本地预览
+- `setup-local.ps1`：一次性设置桌面快捷方式和登录启动项
+- `preview-server.ps1`：基于 Windows 自带 .NET 的静态文件服务，只监听 127.0.0.1
 - `dist/index.html`：页面结构与中文内容
 - `dist/styles.css`：品牌样式、响应式布局与动效
 - `dist/app.js`：主题切换、导航与需求摘要交互

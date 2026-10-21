@@ -27,9 +27,17 @@ try {
         throw '原服务已变化，停止操作已取消，以免关闭其他程序。可删除 .preview\server.json 后重新启动。'
     }
     $details = Get-CimInstance -ClassName Win32_Process -Filter ("ProcessId = {0}" -f $process.Id)
-    if (-not $details.CommandLine -or $details.CommandLine -notmatch '-m http\.server 8000 --bind 127\.0\.0\.1' -or $details.CommandLine.IndexOf($expectedDist, [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
-        throw '无法确认该进程属于青发协网站，停止操作已取消。'
+    $serverScript = Join-Path $PSScriptRoot 'preview-server.ps1'
+    $owned = $false
+    if ($details.CommandLine) {
+        if ($state.ServerScript -ieq $serverScript) {
+            $owned = $details.CommandLine.IndexOf(('"{0}"' -f $serverScript), [System.StringComparison]::OrdinalIgnoreCase) -ge 0 -and $details.CommandLine.IndexOf(('"{0}"' -f $expectedDist), [System.StringComparison]::OrdinalIgnoreCase) -ge 0
+        } else {
+            # Keep support for stopping a Python process recorded by the previous launcher.
+            $owned = $details.CommandLine -match '-m http\.server 8000 --bind 127\.0\.0\.1' -and $details.CommandLine.IndexOf($expectedDist, [System.StringComparison]::OrdinalIgnoreCase) -ge 0
+        }
     }
+    if (-not $owned) { throw '无法确认该进程属于青发协网站，停止操作已取消。' }
     $process.Kill()
     if (-not $process.WaitForExit(5000)) { throw '服务仍在退出中，请稍后重试。' }
     Remove-Item -LiteralPath $cjytdStateFile

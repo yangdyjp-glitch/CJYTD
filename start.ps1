@@ -38,30 +38,6 @@ function Get-PreviewState {
     return 'busy'
 }
 
-function Find-PreviewPython {
-    $candidates = @()
-    foreach ($base in @($env:ProgramFiles, ${env:ProgramFiles(x86)})) {
-        if ($base) { $candidates += (Join-Path $base 'LibreOffice\program\python.exe') }
-    }
-    foreach ($name in @('python.exe', 'python3.exe', 'py.exe')) {
-        $command = Get-Command $name -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
-        if ($command -and $command.Source -notmatch '\\WindowsApps\\') { $candidates += $command.Source }
-    }
-    foreach ($candidate in ($candidates | Select-Object -Unique)) {
-        if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) { continue }
-        try {
-            $pythonArgs = @()
-            if ([System.IO.Path]::GetFileName($candidate) -ieq 'py.exe') { $pythonArgs += '-3' }
-            $pythonArgs += @('-c', 'import sys, http.server; assert sys.version_info >= (3, 7); print(sys.executable)')
-            $detected = @(& $candidate @pythonArgs 2>$null)
-            if ($LASTEXITCODE -eq 0 -and $detected.Count -gt 0) {
-                $executable = [string]$detected[-1]
-                if (Test-Path -LiteralPath $executable -PathType Leaf) { return $executable }
-            }
-        } catch { continue }
-    }
-    throw '未找到可用的 Python 3.7+。请安装 Python 3，或确认 LibreOffice 自带的 Python 仍在原位置。'
-}
 
 try {
     if (-not (Test-Path -LiteralPath (Join-Path $cjytdDist 'index.html') -PathType Leaf)) {
@@ -78,9 +54,11 @@ try {
         throw '8000 端口已被其他服务占用，或该端口运行的是另一份网页。请先关闭原服务，再重新打开青发协网站。'
     }
     if ($state -eq 'free') {
-        $python = Find-PreviewPython
-        $arguments = '-u -m http.server 8000 --bind 127.0.0.1 --directory "{0}"' -f $cjytdDist
-        $cjytdProcess = Start-Process -FilePath $python -ArgumentList $arguments -WorkingDirectory $cjytdRoot -WindowStyle Hidden -RedirectStandardOutput (Join-Path $cjytdState 'server.log') -RedirectStandardError (Join-Path $cjytdState 'server-error.log') -PassThru
+        $serverScript = Join-Path $cjytdRoot 'preview-server.ps1'
+        if (-not (Test-Path -LiteralPath $serverScript -PathType Leaf)) { throw '缺少 preview-server.ps1，请先更新仓库。' }
+        $serverExe = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+        $arguments = '-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "{0}" -Root "{1}" -Port 8000' -f $serverScript, $cjytdDist
+        $cjytdProcess = Start-Process -FilePath $serverExe -ArgumentList $arguments -WorkingDirectory $cjytdRoot -WindowStyle Hidden -RedirectStandardOutput (Join-Path $cjytdState 'server.log') -RedirectStandardError (Join-Path $cjytdState 'server-error.log') -PassThru
         $startedTicks = $cjytdProcess.StartTime.ToUniversalTime().Ticks.ToString()
         $ready = $false
         $deadline = (Get-Date).AddSeconds(15)
@@ -90,12 +68,14 @@ try {
             Start-Sleep -Milliseconds 250
         }
         if (-not $ready -or $cjytdProcess.HasExited) {
-            throw '网站未能启动，请查看 .preview\server-error.log。'
+            $details = Get-Content -LiteralPath (Join-Path $cjytdState 'server-error.log') -Tail 8 -ErrorAction SilentlyContinue
+            throw ("网站未能启动，请查看 .preview\server-error.log。`n" + ($details -join "`n"))
         }
         @{
             ProcessId = $cjytdProcess.Id
             StartedUtcTicks = $startedTicks
-            Executable = $python
+            Executable = $serverExe
+            ServerScript = $serverScript
             Directory = $cjytdDist
         } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $cjytdState 'server.json') -Encoding UTF8
         $cjytdProcess = $null
