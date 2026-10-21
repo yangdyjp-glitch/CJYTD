@@ -4,13 +4,41 @@
 
 ## 预览
 
-下载本仓库后，打开 `dist/index.html` 即可浏览。也可以在仓库根目录运行静态服务器：
+### Windows：一次设置，之后双击打开
 
-```sh
-python -m http.server 8000 --directory dist
+在仓库根目录运行一次：
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\setup-local.ps1
 ```
 
-然后访问 http://localhost:8000 。
+设置成功后会打开网站，并创建：
+
+- 桌面“青发协网站”：后台启动服务并打开网页；服务已运行时直接打开。
+- 桌面“停止青发协网站”：停止由本启动脚本管理的服务。
+- 当前用户的登录启动项“CJYTD Preview”：登录 Windows 后自动启动后台服务，不自动弹出浏览器。
+
+地址仍是 http://127.0.0.1:8000/?v=18#youth 。首次设置后可关闭 PowerShell；之后无需手动打开命令窗口。需要 Python 3.7+，脚本会优先查找 LibreOffice 自带的 Python，再查找 PATH 中的 Python / Python Launcher。无需管理员权限。脚本使用相对路径，支持中文及含空格的目录；请勿在设置后移动仓库。
+
+所有 PowerShell 文件以 UTF-8 BOM 保存，兼容 Windows PowerShell 5.1。后台日志和进程记录保存在 `.preview/`，不提交 Git。若 8000 端口被其他服务占用，启动器会提示，不会关闭其他程序。已在运行且首页内容完全一致的旧预览可继续使用；停止脚本只管理它自己启动并记录的进程。
+
+移除快捷方式、登录启动项并停止脚本管理的服务：
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\setup-local.ps1 -Remove
+```
+
+脚本已检查编码、解析与启动/停止逻辑；Windows 原生后台窗口和快捷方式仍需在目标 Windows 电脑验证。
+
+### 手动预览 / 其他系统
+
+下载本仓库后，打开 `dist/index.html` 即可浏览。也可以在仓库根目录运行静态服务器（该方式需保持终端运行）：
+
+```sh
+python -m http.server 8000 --bind 127.0.0.1 --directory dist
+```
+
+然后访问 http://127.0.0.1:8000/ 。本地地址只在运行该服务的电脑上有效；Git 同步和线上发布是独立操作。
 
 ## 文件结构
 

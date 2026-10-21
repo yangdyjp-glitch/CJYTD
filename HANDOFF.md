@@ -23,6 +23,16 @@
 
 仓库包含当前网页所需的图片、Logo、二维码与代码。换电脑后可以直接克隆仓库预览，无需依赖原电脑的桌面路径。
 
+### Windows 后台预览（2026-10-21 新增）
+
+用户希望像 SGU 项目一样，之后无需手动打开 PowerShell 就能访问。根目录新增 `start.ps1`、`stop.ps1`、`setup-local.ps1`，全部保存为 UTF-8 BOM，避免 Windows PowerShell 5.1 的中文编码错误。
+
+在目标 Windows 电脑的仓库根目录运行一次 `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\setup-local.ps1`。启动验证通过后创建桌面打开/停止快捷方式，以及当前用户的登录启动项；登录时仅启动后台服务，双击桌面图标时打开 `http://127.0.0.1:8000/?v=18#youth`。Python 优先使用 LibreOffice 自带版本，也支持 PATH 中的 Python 3.7+ / py.exe。
+
+仅监听 127.0.0.1；检测端口占用和首页内容；重复打开复用服务；停止时校验进程创建时间、可执行文件、目录和命令行，避免误停其他进程。`.preview/` 中保存日志与进程记录，已加入 Git 忽略。`setup-local.ps1 -Remove` 移除本仓库的快捷方式和启动项并停止受管进程。旧的手动预览进程不会被停止脚本接管。
+
+本轮未更改网页内容或重新发布 Sites。当前开发环境为 Linux，已做脚本编码/语法及模拟逻辑验证；无法代替目标 Windows 上的首次运行、桌面快捷方式和登录启动实测。
+
 ### 新电脑开始工作
 
 ```sh
