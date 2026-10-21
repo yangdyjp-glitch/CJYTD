@@ -1,5 +1,46 @@
 (() => {
 'use strict';
+const japanese=document.documentElement.lang==='ja';
+const locale=japanese?'ja-JP':'zh-CN';
+const messages=japanese?{
+ pauseEffects:'アニメーションと操作効果を停止',resumeEffects:'アニメーションと操作効果を再開',
+ resume:'動きを再開',pauseInteraction:'操作効果を停止',pause:'動きを停止',
+ closeMenu:'メニューを閉じる',openMenu:'メニューを開く',
+ theme:name=>name+'のテーマに切り替えました。',
+ category:(name,photos)=>name+'：'+photos+'。すべての写真を表示しています。もう一度選択すると強調表示を解除できます。',
+ clearCategory:'分類の強調表示を解除しました。すべての写真を表示しています。',
+ clearHighlight:'分類の強調表示を解除しました。',
+ detailChanged:'内容が変更されました。相談内容のまとめを再作成してください。',
+ interestChanged:'相談分野が変更されました。相談内容のまとめを再作成してください。',
+ required:'ご相談内容を簡単にご記入ください。',
+ summary:(interest,detail)=>`中日青年人材発展協会 御中\n\nご相談の分野：${interest}\n\nご相談内容：\n${detail}\n\n連携方法や具体的な進め方について、ご相談させていただけますと幸いです。`,
+ generated:'相談内容をまとめました。コピーまたはダウンロードして、協会へのお問い合わせにご利用ください。',
+ copied:'コピーしました。協会へのメッセージに貼り付けてご利用ください。',
+ copyFailed:'自動コピーできませんでした。選択中の内容を手動でコピーするか、相談メモをダウンロードしてください。',
+ filename:'中日青年人材発展協会-相談メモ.txt',
+ downloaded:'相談メモをダウンロードしました。お問い合わせの際にご利用ください。'
+}:{
+ pauseEffects:'暂停动态和交互效果',resumeEffects:'开启动态和交互效果',
+ resume:'开启动效',pauseInteraction:'暂停交互',pause:'暂停动效',
+ closeMenu:'关闭导航菜单',openMenu:'打开导航菜单',
+ theme:name=>'已切换到'+name+'主题。',
+ category:(name,photos)=>name+'：'+photos+'。全部照片仍在页面展示。再次点选可取消高亮。',
+ clearCategory:'已取消分类高亮，全部照片仍在页面展示。',clearHighlight:'已取消分类高亮。',
+ detailChanged:'内容已修改，请重新生成需求摘要。',interestChanged:'服务方向已更改，请重新生成需求摘要。',
+ required:'请简要描述你的需求。',
+ summary:(interest,detail)=>`致中日青年人才发展协会：\n\n我想了解：${interest}\n\n需求简述：\n${detail}\n\n期待进一步沟通合作方式与具体安排。`,
+ generated:'需求摘要已生成，可复制或下载后联系协会。',copied:'已复制需求摘要，可粘贴到你与协会的沟通中。',
+ copyFailed:'未能自动复制，请手动复制已选中的摘要，或下载需求单。',
+ filename:'青发协-交流合作需求单.txt',downloaded:'需求单已生成下载，可保存后用于联系协会。'
+};
+// Relative links also work when index.html is opened directly from disk.
+function updateLanguageLinks(){
+ document.querySelectorAll('[data-language-link]').forEach(link=>{
+  link.href=link.dataset.languageLink+window.location.hash;
+ });
+}
+updateLanguageLinks();
+window.addEventListener('hashchange',updateLanguageLinks);
 const body=document.body;
 const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -19,13 +60,13 @@ function updateMotion(enabled){
  body.classList.toggle('interaction-paused',!effectsEnabled);
  document.documentElement.style.scrollBehavior=motionEnabled?'':'auto';
  motionToggle.setAttribute('aria-pressed',String(!effectsEnabled));
- motionToggle.setAttribute('aria-label',effectsEnabled?'暂停动态和交互效果':'开启动态和交互效果');
- motionLabel.textContent=!effectsEnabled?'开启动效':reducedMotion.matches?'暂停交互':'暂停动效';
+ motionToggle.setAttribute('aria-label',effectsEnabled?messages.pauseEffects:messages.resumeEffects);
+ motionLabel.textContent=!effectsEnabled?messages.resume:reducedMotion.matches?messages.pauseInteraction:messages.pause;
  motionToggle.disabled=false;
  if(!motionEnabled){
   ['--pointer-x','--pointer-y','--hero-drift','--hero-copy-drift'].forEach(p=>hero.style.setProperty(p,'0px'));
   document.querySelectorAll('[data-parallax]').forEach(frame=>frame.style.setProperty('--photo-y','0px'));
-  document.querySelectorAll('[data-count]').forEach(el=>{el.textContent=Number(el.dataset.count).toLocaleString('zh-CN');});
+  document.querySelectorAll('[data-count]').forEach(el=>{el.textContent=Number(el.dataset.count).toLocaleString(locale);});
  }
  syncSectionMotion();
 }
@@ -35,7 +76,7 @@ reducedMotion.addEventListener('change',()=>updateMotion(effectsEnabled));
 const menuButton=document.querySelector('.menu-button');
 const navigation=document.getElementById('main-nav');
 function setMenu(open){
- menuButton.setAttribute('aria-expanded',String(open));menuButton.setAttribute('aria-label',open?'关闭导航菜单':'打开导航菜单');
+ menuButton.setAttribute('aria-expanded',String(open));menuButton.setAttribute('aria-label',open?messages.closeMenu:messages.openMenu);
  navigation.classList.toggle('is-open',open);header.classList.toggle('menu-is-open',open);body.classList.toggle('menu-open',open);
  document.getElementById('main').inert=open;document.querySelector('.site-footer').inert=open;
 }
@@ -53,7 +94,7 @@ function selectTheme(index,focus=false,announce=false){
   currentTheme=nextTheme;body.dataset.theme=nextTheme;
   themeButtons.forEach(button=>{const active=button===selected;button.classList.toggle('is-active',active);document.getElementById(button.getAttribute('aria-controls')).hidden=!active;});
   scenes.forEach(scene=>scene.classList.toggle('is-active',scene.dataset.scene===nextTheme));
-  if(announce)announcement.textContent='已切换到'+selected.querySelector('.theme-word').textContent+'主题。';
+  if(announce)announcement.textContent=messages.theme(selected.querySelector('.theme-word').textContent);
  }
  if(focus)selected.focus();
 }
@@ -101,7 +142,7 @@ if('IntersectionObserver' in window){
 const countElements=[...document.querySelectorAll('[data-count]')];
 function finishCounts(){
  cancelAnimationFrame(countAnimationFrame);countAnimationFrame=0;
- countElements.forEach(el=>{el.textContent=Number(el.dataset.count).toLocaleString('zh-CN');});
+ countElements.forEach(el=>{el.textContent=Number(el.dataset.count).toLocaleString(locale);});
 }
 function animateCounts(){
  cancelAnimationFrame(countAnimationFrame);
@@ -109,7 +150,7 @@ function animateCounts(){
  const start=performance.now();
  function drawCount(now){
   const t=Math.min((now-start)/1400,1),eased=1-Math.pow(1-t,3);
-  countElements.forEach(el=>{el.textContent=Math.round(Number(el.dataset.count)*eased).toLocaleString('zh-CN');});
+  countElements.forEach(el=>{el.textContent=Math.round(Number(el.dataset.count)*eased).toLocaleString(locale);});
   countAnimationFrame=t<1?requestAnimationFrame(drawCount):0;
  }
  countAnimationFrame=requestAnimationFrame(drawCount);
@@ -200,14 +241,14 @@ document.querySelectorAll('[data-category-navigation]').forEach(control=>{
    render(selected);
    const matches=photos.filter(photo=>photo.dataset.categoryPhoto===selected);
    status.textContent=selected
-    ?button.querySelector('.category-name').textContent+'：'+matches.map(photo=>photo.querySelector('figcaption').textContent).join('、')+'。全部照片仍在页面展示。再次点选可取消高亮。'
-    :'已取消分类高亮，全部照片仍在页面展示。';
+    ?messages.category(button.querySelector('.category-name').textContent,matches.map(photo=>photo.querySelector('figcaption').textContent).join('、'))
+    :messages.clearCategory;
   });
  });
  control.addEventListener('pointerleave',()=>render(selected));
  control.addEventListener('keydown',event=>{
   if(event.key==='Escape'){
-   selected=null;render(null);status.textContent='已取消分类高亮。';
+   selected=null;render(null);status.textContent=messages.clearHighlight;
   }
  });
 });
@@ -218,6 +259,9 @@ document.querySelectorAll('[data-category-navigation]').forEach(control=>{
   const summary = document.getElementById('request-summary');
   const result = document.getElementById('summary-result');
   const status = document.getElementById('form-status');
+  detail.addEventListener('invalid', () => {
+    if (!detail.value.trim()) detail.setCustomValidity(messages.required);
+  });
   let opener;
   document.querySelectorAll('[data-open-intake]').forEach(button => button.addEventListener('click', () => {
     opener = button;
@@ -238,26 +282,26 @@ document.querySelectorAll('[data-category-navigation]').forEach(control=>{
     detail.setCustomValidity('');
     if (!result.hidden) {
       result.hidden = true;
-      status.textContent = '内容已修改，请重新生成需求摘要。';
+      status.textContent = messages.detailChanged;
     }
   });
   document.getElementById('interest').addEventListener('change', () => {
     if (!result.hidden) {
       result.hidden = true;
-      status.textContent = '服务方向已更改，请重新生成需求摘要。';
+      status.textContent = messages.interestChanged;
     }
   });
   form.addEventListener('submit', event => {
     event.preventDefault();
     const value = detail.value.trim();
     if (!value) {
-      detail.setCustomValidity('请简要描述你的需求。');
+      detail.setCustomValidity(messages.required);
       detail.reportValidity();
       return;
     }
-    summary.value = `致中日青年人才发展协会：\n\n我想了解：${document.getElementById('interest').value}\n\n需求简述：\n${value}\n\n期待进一步沟通合作方式与具体安排。`;
+    summary.value = messages.summary(document.getElementById('interest').value,value);
     result.hidden = false;
-    status.textContent = '需求摘要已生成，可复制或下载后联系协会。';
+    status.textContent = messages.generated;
     summary.focus({ preventScroll: true });
     result.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'nearest' });
   });
@@ -270,11 +314,11 @@ document.querySelectorAll('[data-category-navigation]').forEach(control=>{
         summary.select();
         if (!document.execCommand('copy')) throw new Error('copy unavailable');
       }
-      status.textContent = '已复制需求摘要，可粘贴到你与协会的沟通中。';
+      status.textContent = messages.copied;
     } catch {
       summary.focus();
       summary.select();
-      status.textContent = '未能自动复制，请手动复制已选中的摘要，或下载需求单。';
+      status.textContent = messages.copyFailed;
     }
   });
   document.getElementById('download-summary').addEventListener('click', () => {
@@ -282,12 +326,12 @@ document.querySelectorAll('[data-category-navigation]').forEach(control=>{
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = '青发协-交流合作需求单.txt';
+    anchor.download = messages.filename;
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    status.textContent = '需求单已生成下载，可保存后用于联系协会。';
+    status.textContent = messages.downloaded;
   });
 
 document.querySelectorAll('[data-interest]').forEach(button=>button.addEventListener('click',()=>{document.getElementById('interest').value=button.dataset.interest;document.getElementById('summary-result').hidden=true;document.getElementById('form-status').textContent='';}));

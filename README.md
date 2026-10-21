@@ -4,6 +4,14 @@
 
 ## 预览
 
+### 直接打开（当前推荐）
+
+双击 `dist/index.html` 打开中文版；顶部“关于协会”左侧的“中文 / 日本語”可切换完整页面。也可直接打开 `dist/ja.html`。无需启动服务器、安装环境或更新 Git；请将 HTML、CSS、JavaScript 和 `assets` 文件夹保存在同一目录结构中。
+
+日文版包含正文、活动图片说明、图片替代文字、导航、弹窗、校验提示、复制反馈和下载需求单。两种语言使用独立静态页面，切换时保留当前章节锚点，因此也支持浏览器后退与直接收藏日文页面。
+
+维护时修改 `dist/index.html` 和 `locales/ja.json`，运行 `python scripts/build_japanese.py` 更新 `dist/ja.html`；动态交互的两种语言文案在 `dist/app.js` 中。普通浏览无需运行此脚本。
+
 ### Windows：一次设置，之后双击打开
 
 在仓库根目录运行一次：

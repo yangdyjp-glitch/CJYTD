@@ -397,3 +397,79 @@ body:not(.interaction-paused) .chapter-photo.is-category-match img{transform:sca
  .chapter-media[data-photos="5"] .chapter-photo:last-child{min-height:0;aspect-ratio:auto}
  .chapter-media[data-photos="5"] .chapter-photo:last-child img{position:absolute;inset:0}
 }
+
+/* Language navigation stays immediately before the section links. */
+.header-inner{gap:24px}
+.header-controls{display:flex;align-items:center;gap:26px;min-width:0}
+.language-switch{display:flex;align-items:center;gap:3px;flex:none;white-space:nowrap;font-size:13px}
+.language-switch>a{display:flex;align-items:center;justify-content:center;position:relative;min-width:44px;min-height:44px;padding:6px 5px;color:#d1dbe9}
+.language-switch>span{color:#9aaac0;font-size:12px}
+.language-switch>a[aria-current="page"]{color:#fff;font-weight:600}
+.language-switch>a[aria-current="page"]:after{content:"";position:absolute;bottom:5px;left:8px;right:8px;height:2px;background:#fff}
+.language-switch>a:hover{color:#fff;background:#ffffff12}
+html[lang="ja"]{--font:"Yu Gothic","Hiragino Kaku Gothic ProN","Meiryo","Noto Sans CJK JP",sans-serif;line-break:strict}
+html[lang="ja"] .brand{display:flex;align-items:center;gap:12px}
+.brand-mark{position:relative;display:block;overflow:hidden;width:48px;height:56px;flex:none}
+.brand-mark img{position:absolute;left:-10px;top:-20px;width:332px;height:99px;max-width:none;object-fit:fill}
+.brand-japanese{display:flex;flex-direction:column;gap:3px}
+.brand-japanese strong{font-size:23px;line-height:1.4;font-weight:600;letter-spacing:.025em}
+.brand-japanese small{font-size:11px;line-height:1.5;letter-spacing:.04em}
+html[lang="ja"] .chapter-layout .display-heading{font-size:clamp(28px,2.65vw,42px);line-height:1.65}
+html[lang="ja"] .chapter-label>span:last-child{font-size:17px}
+html[lang="ja"] .chapter-photo figcaption{line-height:1.6;overflow-wrap:anywhere}
+html[lang="ja"] .connect-copy h2{font-size:clamp(28px,2.8vw,40px);line-height:1.55}
+html[lang="ja"] .about-mission .display-heading{font-size:clamp(28px,3vw,44px);line-height:1.65}
+html[lang="ja"] .dialog-content h2{font-size:clamp(24px,3vw,32px);line-height:1.55}
+@media(min-width:851px) and (max-width:1200px){
+ .header-controls{gap:16px}
+ .header-inner{gap:18px}
+ .brand{width:285px}
+ .main-nav{gap:17px}
+ .brand-japanese strong{font-size:20px}
+}
+@media(min-width:851px) and (max-width:1000px){
+ .brand{width:245px;height:57px}
+ .header-controls{gap:12px}
+ .main-nav{gap:12px}
+ .language-switch{font-size:12px}
+ .brand-japanese strong{font-size:17px}
+ .brand-japanese small{font-size:10px}
+ html[lang="ja"] .brand{gap:7px}
+}
+@media(max-width:850px){
+ .header-inner{gap:12px}
+ .header-controls{gap:14px}
+ .brand{max-width:calc(100% - 186px)}
+ .language-switch{font-size:13px}
+}
+@media(max-width:650px){
+ .header-inner{width:calc(100% - 32px);display:grid;grid-template-columns:minmax(0,1fr) 44px;column-gap:12px;row-gap:0;min-height:108px;padding:0}
+ .header-controls{display:contents}
+ .brand{width:280px;max-width:100%;height:60px;grid-column:1;grid-row:1}
+ .menu-button{grid-column:2;grid-row:1}
+ .main-nav{top:108px;height:calc(100dvh - 108px)}
+ .language-switch{grid-column:1/-1;grid-row:2;justify-self:start;gap:3px;font-size:12px;margin-top:-4px}
+ .language-switch>a{padding-inline:4px}
+ html[lang="ja"] .brand{gap:6px}
+ .brand-mark{width:36px;height:44px}
+ .brand-mark img{width:258px;height:77px;left:-8px;top:-15px}
+ .brand-japanese strong{font-size:17px;line-height:1.5;letter-spacing:0;word-break:keep-all}
+ .brand-japanese small{display:block;font-size:9px;letter-spacing:0}
+ html[lang="ja"] .hero h1{font-size:18px}
+ html[lang="ja"] .theme-copy h2{font-size:18px}
+ html[lang="ja"] .theme-copy p{font-size:13px}
+ html[lang="ja"] .theme-en{font-size:10px;letter-spacing:0}
+ html[lang="ja"] .chapter-layout .display-heading{font-size:29px}
+ html[lang="ja"] .chapter-label>span:last-child{font-size:15px}
+ html[lang="ja"] .category-name{font-size:12px;line-height:1.5}
+ html[lang="ja"] .chapter-photo figcaption{font-size:10px}
+ html[lang="ja"] .about-copy .lead{font-size:20px}
+ html[lang="ja"] .about-mission .display-heading{font-size:28px}
+ html[lang="ja"] .hero-bottom{gap:8px}
+ html[lang="ja"] .process-heading h2{max-width:none;font-size:20px}
+}
+@media(max-width:360px){
+ .brand-japanese strong{font-size:16px}
+ .brand-japanese small{display:none}
+ html[lang="ja"] .chapter-layout .display-heading{font-size:27px}
+}
