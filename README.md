@@ -78,7 +78,7 @@ python -m http.server 8000 --bind 127.0.0.1 --directory dist
 
 ## 部署
 
-将 `dist` 设置为静态站点的发布目录即可，无需构建命令。当前线上预览：https://cjytd-youth-exchange.phd-yang.chatgpt.site/ （访问权限沿用现有站点设置）。
+当前通过 Railway 部署，GitHub `main` 更新后自动触发。仓库根目录 `Staticfile` 使用 `root: dist` 指定静态网站目录，无需构建命令。修改后需同步 `dist` 并核对对应提交的 Railway 部署状态。
 
 ## 素材
 

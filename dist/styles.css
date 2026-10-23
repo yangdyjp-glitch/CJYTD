@@ -473,3 +473,44 @@ html[lang="ja"] .dialog-content h2{font-size:clamp(24px,3vw,32px);line-height:1.
  .brand-japanese small{display:none}
  html[lang="ja"] .chapter-layout .display-heading{font-size:27px}
 }
+
+/* Hero text emphasis: enlarged supporting text, compact navigation arrows. */
+.hero-promise{font-size:18px}
+.hero h1{font-size:30px}
+.theme-en{font-size:20px}
+.theme-copies{min-height:218px;max-width:780px}
+.theme-copy h2{font-size:27px}
+.theme-copy p{font-size:18px}
+.hero-link{font-size:16px;gap:13px}
+.hero-link .round-arrow{width:32px;height:32px;flex:0 0 32px}
+.hero-link .round-arrow svg{width:15px;height:15px}
+@media(min-width:1800px){
+ .hero-promise{font-size:20px}
+ .hero h1{font-size:34px}
+ .theme-copy h2{font-size:30px}
+ .theme-copy p{font-size:20px}
+}
+@media(max-width:1000px){
+ .hero-promise{font-size:16px}
+ .hero h1{font-size:26px}
+ .theme-en{font-size:18px}
+ .theme-copies{min-height:210px}
+ .theme-copy h2{font-size:25px}
+ .theme-copy p{font-size:17px}
+}
+@media(max-width:650px){
+ .hero-promise{font-size:14px}
+ .hero h1,html[lang="ja"] .hero h1{font-size:22px}
+ .theme-en,html[lang="ja"] .theme-en{font-size:clamp(12px,3.5vw,14px)}
+ .theme-copies{min-height:260px}
+ .theme-copy h2,html[lang="ja"] .theme-copy h2{font-size:21px}
+ .theme-copy p,html[lang="ja"] .theme-copy p{font-size:16px}
+ .hero-link{font-size:15px;gap:11px}
+ .hero-link .round-arrow{width:30px;height:30px;flex-basis:30px}
+}
+@media(max-width:360px){
+ .hero h1,html[lang="ja"] .hero h1{font-size:19px}
+ .theme-en,html[lang="ja"] .theme-en{font-size:12px}
+ .theme-copy h2,html[lang="ja"] .theme-copy h2{font-size:18px}
+ .theme-copy p,html[lang="ja"] .theme-copy p{font-size:15px}
+}
